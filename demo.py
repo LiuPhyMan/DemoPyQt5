@@ -173,30 +173,46 @@ class BetterQLabel(QW.QLabel):
         font = QFont("Ubuntu", 10)
         self.setFont(font)
 
+class BetterQDoubleSpinBox(QW.QDoubleSpinBox):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        font = QFont("Ubuntu", 10)
+        self.setFont(font)
+
 
 class SettingQWidget(QW.QWidget):
+    settingChanged = pyqtSignal()
 
     def __init__(self):
         super().__init__()
         self._box = TheComboBox()
-        self._width_lineedit = QW.QLineEdit()
+        self._text = QW.QLineEdit()
+        self._text.setFont(QFont("Ubuntu", 10))
         _layout = QW.QGridLayout()
         _layout.addWidget(BetterQLabel('1. Plot properties'), 0, 0, 1, 2)
         _layout.addWidget(BetterQLabel('Color'), 1, 0, alignment=Qt.AlignRight)
         _layout.addWidget(self._box, 1, 1)
-        _layout.addWidget(BetterQLabel("Width"), 2, 0, alignment=Qt.AlignRight)
-        _layout.addWidget(self._width_lineedit, 2, 1)
+        _layout.addWidget(BetterQLabel("Text"), 2, 0, alignment=Qt.AlignRight)
+        _layout.addWidget(self._text, 2, 1)
         _layout.addWidget(BetterQLabel("2. Adjustment"), 3, 0, 1, 2)
-        _layout.addWidget(BetterQLabel("x"), 4, 0, alignment=Qt.AlignRight)
-        _layout.addWidget(QW.QDoubleSpinBox(), 4, 1)
-        _layout.addWidget(BetterQLabel("y"), 5, 0, alignment=Qt.AlignRight)
-        _layout.addWidget(QW.QDoubleSpinBox(), 5, 1)
-        _layout.addWidget(BetterQLabel("baseline"), 6, 0, alignment=Qt.AlignRight)
-        _layout.addWidget(QW.QDoubleSpinBox(), 6, 1)
-        _layout.addWidget(BetterQLabel("*I0"), 7, 0, alignment=Qt.AlignRight)
-        _layout.addWidget(QW.QDoubleSpinBox(), 7, 1)
-        _layout.setRowStretch(8, 1)
+        # _layout.addWidget(BetterQLabel("x0"), 4, 0, alignment=Qt.AlignRight)
+        # _layout.addWidget(QW.QDoubleSpinBox(), 4, 1)
+        # _layout.addWidget(BetterQLabel("k0"), 5, 0, alignment=Qt.AlignRight)
+        # _layout.addWidget(QW.QDoubleSpinBox(), 5, 1)
+        _layout.addWidget(BetterQLabel("baseline"), 4, 0, alignment=Qt.AlignRight)
+        _layout.addWidget(BetterQDoubleSpinBox(), 4, 1)
+        _layout.addWidget(BetterQLabel("*I0"), 5, 0, alignment=Qt.AlignRight)
+        _layout.addWidget(BetterQDoubleSpinBox(), 5, 1)
+        _layout.setRowStretch(6, 1)
         self.setLayout(_layout)
+        self._set_connect()
+
+    def _set_connect(self):
+        def slot_emit():
+            self.settingChanged.emit()
+
+        self._text.textChanged.connect(slot_emit)
 
 
 class TheWindow(QW.QMainWindow):
@@ -232,8 +248,13 @@ class TheWindow(QW.QMainWindow):
 
         def exp_list_row_changed_callback():
             self.spectra_plot.highlight_line(self.exp_list.currentRow())
+            self.setting._text.setText(self.exp_list.currentItem().text())
+
+        def setting_changed_callback():
+            self.exp_list.currentItem().setText(self.setting._text.text())
 
         self.exp_list.currentRowChanged.connect(exp_list_row_changed_callback)
+        self.setting.settingChanged.connect(setting_changed_callback)
 
     def read_spec_data(self):
         # .asc file appends setting info.
