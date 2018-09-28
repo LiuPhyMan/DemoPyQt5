@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5e9d69ea-2da4-4a2f-8735-70119ebbcbd2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/matplotlib_large.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test.asc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo.py" afterDir="false" />
     </list>
@@ -17,34 +16,37 @@
     <session id="-526714883">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="5" />
+          <entry key="project.closed" value="6" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.36" value="1" />
           <entry key="project.open.time.42" value="1" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.71" value="1" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.open.time.83" value="1" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
+          <entry key="asc" value="1" />
           <entry key="py" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
+          <entry key="PLAIN_TEXT" value="1" />
           <entry key="Python" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="Python Console" value="42" />
-          <entry key="py" value="5705" />
+          <entry key="Python Console" value="88" />
+          <entry key="py" value="8651" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="5747" />
+          <entry key="Python" value="8739" />
         </counts>
       </usages-collector>
     </session>
@@ -54,13 +56,25 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/demo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="684">
-              <caret line="78" column="24" selection-start-line="78" selection-start-column="24" selection-end-line="78" selection-end-column="24" />
+            <state relative-caret-position="233">
+              <caret line="123" column="44" lean-forward="true" selection-start-line="123" selection-start-column="44" selection-end-line="123" selection-end-column="44" />
               <folding>
-                <marker date="1538034693898" expanded="true" signature="865:2661" ph="..." />
-                <marker date="1538034693898" expanded="true" signature="1514:2642" ph="..." />
-                <marker date="1538034693898" expanded="true" signature="2300:2309" ph="..." />
-                <marker date="1538034693898" expanded="true" signature="3374:3406" ph="..." />
+                <element signature="e#594#858#0" />
+                <element signature="e#591#838#0" />
+                <element signature="e#871#1477#0" />
+                <element signature="e#3477#3591#0" />
+                <element signature="e#3916#4056#0" />
+                <element signature="e#4098#5252#0" />
+                <element signature="e#5872#6566#0" />
+                <marker date="1538127487089" expanded="true" signature="1230:3257" ph="..." />
+                <marker date="1538127487089" expanded="true" signature="1879:3238" ph="..." />
+                <marker date="1538127487089" expanded="true" signature="2770:2779" ph="..." />
+                <marker date="1538127487089" expanded="true" signature="3147:3193" ph="..." />
+                <marker date="1538127487089" expanded="true" signature="4221:4504" ph="..." />
+                <marker date="1538127487089" expanded="true" signature="4526:4558" ph="..." />
+                <marker date="1538127487089" expanded="true" signature="4638:4760" ph="..." />
+                <marker date="1538127487089" expanded="true" signature="7558:8431" ph="..." />
+                <marker date="1538127487089" expanded="true" signature="7668:7751" ph="..." />
               </folding>
             </state>
           </provider>
@@ -91,9 +105,9 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-114" />
-    <option name="y" value="45" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-282" />
+    <option name="y" value="99" />
     <option name="width" value="1860" />
     <option name="height" value="1099" />
   </component>
@@ -103,7 +117,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -115,6 +128,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -122,7 +136,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="pyconsole" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Console Font" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myShowDebugConsoleByDefault" value="true" />
@@ -159,12 +173,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="54" y="-8" width="1634" height="1066" extended-state="6" />
+    <frame x="-282" y="99" width="1860" height="1099" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.3739184" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3280911" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info active="true" id="Python Console" order="3" visible="true" weight="0.40049443" />
+      <window_info id="Python Console" order="3" weight="0.43139678" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -187,19 +202,41 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.asc" />
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/test.asc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="1042" column="33" selection-start-line="1042" selection-start-column="33" selection-end-line="1042" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/demo.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="684">
-          <caret line="78" column="24" selection-start-line="78" selection-start-column="24" selection-end-line="78" selection-end-column="24" />
+        <state relative-caret-position="233">
+          <caret line="123" column="44" lean-forward="true" selection-start-line="123" selection-start-column="44" selection-end-line="123" selection-end-column="44" />
           <folding>
-            <marker date="1538034693898" expanded="true" signature="865:2661" ph="..." />
-            <marker date="1538034693898" expanded="true" signature="1514:2642" ph="..." />
-            <marker date="1538034693898" expanded="true" signature="2300:2309" ph="..." />
-            <marker date="1538034693898" expanded="true" signature="3374:3406" ph="..." />
+            <element signature="e#594#858#0" />
+            <element signature="e#591#838#0" />
+            <element signature="e#871#1477#0" />
+            <element signature="e#3477#3591#0" />
+            <element signature="e#3916#4056#0" />
+            <element signature="e#4098#5252#0" />
+            <element signature="e#5872#6566#0" />
+            <marker date="1538127487089" expanded="true" signature="1230:3257" ph="..." />
+            <marker date="1538127487089" expanded="true" signature="1879:3238" ph="..." />
+            <marker date="1538127487089" expanded="true" signature="2770:2779" ph="..." />
+            <marker date="1538127487089" expanded="true" signature="3147:3193" ph="..." />
+            <marker date="1538127487089" expanded="true" signature="4221:4504" ph="..." />
+            <marker date="1538127487089" expanded="true" signature="4526:4558" ph="..." />
+            <marker date="1538127487089" expanded="true" signature="4638:4760" ph="..." />
+            <marker date="1538127487089" expanded="true" signature="7558:8431" ph="..." />
+            <marker date="1538127487089" expanded="true" signature="7668:7751" ph="..." />
           </folding>
         </state>
       </provider>
