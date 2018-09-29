@@ -16,8 +16,16 @@ from PyQt5.QtGui import QIcon, QPixmap, QColor, QFont, QCursor
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
 from matplotlib.figure import Figure
 from matplotlib.widgets import Cursor
+from matplotlib.ticker import FormatStrFormatter
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5 import NavigationToolbar2QT as NavigationToolbar
+
+
+class SpecData(object):
+
+    def __init__(self, wavelength, intensity):
+        self.wavelength = wavelength
+        self.intensity = intensity
 
 
 class BetterButton(QW.QPushButton):
@@ -28,6 +36,22 @@ class BetterButton(QW.QPushButton):
         _font = QFont('Ubuntu', 11)
         self.setFont(_font)
         self.setStyleSheet(':hover {background-color: #87CEFA ;}')
+
+
+class BetterQDoubleSpinBox(QW.QDoubleSpinBox):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        font = QFont("Ubuntu", 10)
+        self.setFont(font)
+
+
+class BetterQLabel(QW.QLabel):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        font = QFont("Ubuntu", 10)
+        self.setFont(font)
 
 
 class PlotCanvas(FigureCanvas):
@@ -54,6 +78,55 @@ class QPlot(QW.QWidget):
         layout.addWidget(toolbar)
         layout.addWidget(self.canvas)
         self.setLayout(layout)
+
+
+class SpectraPlot(QPlot):
+
+    def __init__(self, parent=None):
+        super().__init__(parent, figsize=(12, 6))
+        self.axes = self.figure.add_subplot(111)
+        self.axes.set_xlabel('Wavelength [nm]')
+        self.axes.set_ylabel("Intensity [a.u.]")
+        self.axes.yaxis.set_major_formatter(FormatStrFormatter("%.1e"))
+        self.axes.grid(linestyle='--')
+        self._cursor = Cursor(self.axes, color='green', linewidth=.5)
+        self.figure.tight_layout()
+        self._spec_data = []
+        self._lines = []
+        # self._set_connect()
+
+    def add_spec(self, wavelength, intensity):
+        print('add_spec')
+        self._spec_data.append(SpecData(wavelength, intensity))
+        _ln, = self.axes.plot(wavelength, intensity, linewidth=.5, marker='.', alpha=0.5)
+        self._lines.append(_ln)
+        self.canvas_draw()
+
+    def delete_spec(self, index_to_delete):
+        self._spec_data.pop(index_to_delete)
+        self._lines.pop(index_to_delete)
+        self.canvas_draw()
+
+    def adjust_spec(self, *, index_to_adjust, baseline, k0):
+        self._lines[index_to_adjust].set_xdata(self._spec_data[index_to_adjust].wavelength)
+        in_adjusted = (self._spec_data[index_to_adjust].intensity + baseline) * k0
+        self._lines[index_to_adjust].set_ydata(in_adjusted)
+        self.canvas_draw()
+
+    def highlight_line(self, index_to_highlight):
+        for _i, _ln in enumerate(self._lines):
+            if _i == index_to_highlight:
+                _ln.set_linewidth(1.5)
+                _ln.set_alpha(1)
+            else:
+                _ln.set_linewidth(.5)
+                _ln.set_alpha(.5)
+        self.canvas_draw()
+
+    def canvas_draw(self):
+        self.canvas.draw()
+    # def plot_spectra(self):
+    #     sel
 
 
 class ReadFileQWidget(QW.QWidget):
@@ -99,61 +172,18 @@ class ReadFileQWidget(QW.QWidget):
         self._entry.textChanged.connect(slot_emit)
 
 
-class SpectraPlot(QPlot):
-
-    def __init__(self, parent=None):
-        super().__init__(parent, figsize=(12, 6))
-        self.axes = self.figure.add_subplot(111)
-        self.axes.set_xlabel('Wavelength [nm]')
-        self.axes.set_ylabel("Intensity [a.u.]")
-        self.axes.grid(linestyle='--')
-        self._cursor = Cursor(self.axes, color='green', linewidth=.5)
-        self.figure.tight_layout()
-        self._spec_data = []
-        self._lines = []
-        # self._set_connect()
-
-    def add_spec(self, wavelength, intensity):
-        print('add_spec')
-        self._spec_data.append(SpecData(wavelength, intensity))
-        _ln, = self.axes.plot(wavelength, intensity, linewidth=.5, marker='.', alpha=0.5)
-        self._lines.append(_ln)
-        self.canvas_draw()
-
-    def delete_spec(self, index_to_delete):
-        self._spec_data.pop(index_to_delete)
-        self._lines.pop(index_to_delete)
-        self.canvas_draw()
-
-    def highlight_line(self, index_to_highlight):
-        for _i, _ln in enumerate(self._lines):
-            if _i == index_to_highlight:
-                _ln.set_linewidth(1.5)
-                _ln.set_alpha(1)
-            else:
-                _ln.set_linewidth(.5)
-                _ln.set_alpha(.5)
-        self.canvas_draw()
-
-    def canvas_draw(self):
-        self.canvas.draw()
-    # def plot_spectra(self):
-    #     sel
-
-
-class TheQListWidget(QW.QListWidget):
+class ExpQListWidget(QW.QListWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        # self.
-        # self.currentRowChanged
+        self.current_row = -1
+        self._set_connect()
 
+    def _set_connect(self):
+        def current_row_changed_callback():
+            self.current_row = self.currentRow()
 
-class SpecData(object):
-
-    def __init__(self, wavelength, intensity):
-        self.wavelength = wavelength
-        self.intensity = intensity
+        self.currentRowChanged.connect(current_row_changed_callback)
 
 
 class TheComboBox(QW.QComboBox):
@@ -166,53 +196,38 @@ class TheComboBox(QW.QComboBox):
             self.addItem(QIcon(pixmap), color)
 
 
-class BetterQLabel(QW.QLabel):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        font = QFont("Ubuntu", 10)
-        self.setFont(font)
-
-class BetterQDoubleSpinBox(QW.QDoubleSpinBox):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        font = QFont("Ubuntu", 10)
-        self.setFont(font)
-
-
 class SettingQWidget(QW.QWidget):
     settingChanged = pyqtSignal()
 
     def __init__(self):
         super().__init__()
-        self._box = TheComboBox()
         self._text = QW.QLineEdit()
         self._text.setFont(QFont("Ubuntu", 10))
-        _layout = QW.QGridLayout()
-        _layout.addWidget(BetterQLabel('1. Plot properties'), 0, 0, 1, 2)
-        _layout.addWidget(BetterQLabel('Color'), 1, 0, alignment=Qt.AlignRight)
-        _layout.addWidget(self._box, 1, 1)
-        _layout.addWidget(BetterQLabel("Text"), 2, 0, alignment=Qt.AlignRight)
-        _layout.addWidget(self._text, 2, 1)
-        _layout.addWidget(BetterQLabel("2. Adjustment"), 3, 0, 1, 2)
-        # _layout.addWidget(BetterQLabel("x0"), 4, 0, alignment=Qt.AlignRight)
-        # _layout.addWidget(QW.QDoubleSpinBox(), 4, 1)
-        # _layout.addWidget(BetterQLabel("k0"), 5, 0, alignment=Qt.AlignRight)
-        # _layout.addWidget(QW.QDoubleSpinBox(), 5, 1)
-        _layout.addWidget(BetterQLabel("baseline"), 4, 0, alignment=Qt.AlignRight)
-        _layout.addWidget(BetterQDoubleSpinBox(), 4, 1)
-        _layout.addWidget(BetterQLabel("*I0"), 5, 0, alignment=Qt.AlignRight)
-        _layout.addWidget(BetterQDoubleSpinBox(), 5, 1)
-        _layout.setRowStretch(6, 1)
+        self._baseline = BetterQDoubleSpinBox()
+        self._y0 = BetterQDoubleSpinBox()
+        # _layout = QW.QGridLayout()
+        _layout = QW.QFormLayout()
+        _layout.addRow(BetterQLabel('1.Plot'))
+        # _layout.addget(BetterQLabel('1. Plot properties'), 0, 0, 1, 2)
+        _layout.addRow(BetterQLabel("Text"), self._text)
+        _layout.addRow(BetterQLabel("2. Adjustment"))
+        _layout.addRow(BetterQLabel("baseline"), self._baseline)
+        _layout.addRow(BetterQLabel("k0"), self._y0)
+        # _layout.setRowStretch(6, 1)
         self.setLayout(_layout)
         self._set_connect()
+
+    def setting_paras(self):
+        return dict(baseline=self._baseline.value(),
+                    k0=self._y0.value())
 
     def _set_connect(self):
         def slot_emit():
             self.settingChanged.emit()
 
         self._text.textChanged.connect(slot_emit)
+        self._baseline.valueChanged.connect(slot_emit)
+        self._y0.valueChanged.connect(slot_emit)
 
 
 class TheWindow(QW.QMainWindow):
@@ -223,7 +238,7 @@ class TheWindow(QW.QMainWindow):
         # self.showMaximized()
         self.cenWidget = QW.QWidget()
         self.spectra_plot = SpectraPlot()
-        self.exp_list = TheQListWidget()
+        self.exp_list = ExpQListWidget()
         self.setting = SettingQWidget()
         self.read_file = ReadFileQWidget()
         self.setCentralWidget(self.cenWidget)
@@ -251,7 +266,12 @@ class TheWindow(QW.QMainWindow):
             self.setting._text.setText(self.exp_list.currentItem().text())
 
         def setting_changed_callback():
+            print('setting changed')
             self.exp_list.currentItem().setText(self.setting._text.text())
+            print(self.exp_list.current_row)
+            self.spectra_plot.adjust_spec(index_to_adjust=self.exp_list.current_row,
+                                          baseline=self.setting.setting_paras()['baseline'],
+                                          k0=self.setting.setting_paras()['k0'])
 
         self.exp_list.currentRowChanged.connect(exp_list_row_changed_callback)
         self.setting.settingChanged.connect(setting_changed_callback)
@@ -267,6 +287,7 @@ class TheWindow(QW.QMainWindow):
         _pixmap.fill(QColor(_current_line_color))
         item_to_add = QW.QListWidgetItem()
         item_to_add.setText(self.read_file._entry.text())
+        # item_to_add.setCheckState(True)
         item_to_add.setIcon(QIcon(_pixmap))
         self.exp_list.addItem(item_to_add)
 
